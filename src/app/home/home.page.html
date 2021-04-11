@@ -1,20 +1,132 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
+    <ion-toolbar color="warning">
+        <ion-title>
+            Item Page
+        </ion-title>
+    </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="ion-padding">
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+    <form [formGroup]="itemForm" (ngSubmit)="CreateRecord()">
+
+        <ion-item>
+            <ion-label position="floating">Name</ion-label>
+            <ion-input formControlName="Name"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="floating">Price</ion-label>
+            <ion-input formControlName="Price"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="floating">Description</ion-label>
+            <ion-input formControlName="Decs"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="floating">Quantity</ion-label>
+            <ion-input formControlName="Qty"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="floating">Category</ion-label>
+            <ion-input formControlName="Category"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-button (click)="CreateRecord()" [disabled]="itemForm.invalid">
+                <ion-icon size="small" slot="icon-only" name="add"></ion-icon>
+                &nbsp;Create Record
+            </ion-button>
+        </ion-item>
+
+    </form>
+
+
+    <ion-card *ngFor="let item of itemList" color="primary">
+        <span *ngIf="!item.isEdit; else elseBlock">
+      <ion-card-header>
+        <ion-card-title>Item Name:{{item.Name}}</ion-card-title>
+        
+      </ion-card-header>
+      <ion-card-content>
+        <ion-row class="ion-align-items-center">
+          <ion-col>
+            <ion-label>
+              <b>Price: {{ item.Price | currency:'USD' }}</b>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row class="ion-align-items-center">
+          <ion-col>
+            <ion-label>
+              <b>Quantity: {{item.Qty}}</b>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row class="ion-align-items-center">
+          <ion-col>
+            <ion-label>
+              <b>Category: {{item.Category}}</b>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-card-subtitle>Description: {{item.Decs}}</ion-card-subtitle>
+        <ion-button shape="round" color="secondary" size="small" (click)="EditRecord(item)">
+          <ion-icon size="small" slot="icon-only" name="create"></ion-icon>
+        </ion-button>
+        <ion-button shape="round" color="danger" size="small" (click)="RemoveRecord(item.id)">
+          <ion-icon size="small" slot="icon-only" name="trash"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </span>
+        <ng-template #elseBlock>
+            <ion-card-header>
+                <ion-card-title>
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col>
+                                Edit
+                            </ion-col>
+                            <ion-col>
+                                <ion-button fill="solid" color="medium" size="small" (click)="item.isEdit = false">
+                                    Cancel
+                                </ion-button>
+                            </ion-col>
+                            <ion-col>
+                                <ion-button fill="solid" color="success" size="small" (click)="UpdateRecord(item)">
+                                    Update
+                                </ion-button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+                <ion-item>
+                    <ion-label><strong>Name</strong></ion-label>
+                    <ion-input type="text" [(ngModel)]="item.EditName"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label><strong>Price</strong></ion-label>
+                    <ion-input type="text" [(ngModel)]="item.EditPrice"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label><strong>Description</strong></ion-label>
+                    <ion-input type="text" [(ngModel)]="item.EditDecs"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label><strong>Description</strong></ion-label>
+                    <ion-input type="text" [(ngModel)]="item.EditQty"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label><strong>Description</strong></ion-label>
+                    <ion-input type="text" [(ngModel)]="item.EditCategory"></ion-input>
+                </ion-item>
+            </ion-card-content>
+        </ng-template>
+    </ion-card>
+
 </ion-content>
